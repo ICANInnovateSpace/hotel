@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 配置mysql的数据源-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <!-- jdbc驱动 -->
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <!-- 数据库的url以及用户名密码 -->
+        <property name="url" value="jdbc:mysql://localhost:3306/hotel"/>
+        <property name="username" value="root"/>
+        <property name="password" value="dahui"/>
+    </bean>
+    <!-- 配置sessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- hibernate的一些属性 -->
+        <property name="hibernateProperties">
+            <props>
+                <!-- 数据库方言 -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <!-- hibernate加载时自动更新数据库 -->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+        </property>
+        <!-- 加载hibernate自身的配置文件 -->
+        <property name="configLocations">
+            <list>
+                <value>classpath*:config/hibernate/hibernate.cfg.xml</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 配置事务管理（声明式事务） -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!-- 事务代理工厂类 -->
+    <bean id="transactionBase"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean" lazy-init="true" abstract="true">
+        <!-- 映射到事务管理的配置 -->
+        <property name="transactionManager" ref="transactionManager"/>
+        <!-- 配置事务管理的属性 -->
+        <property name="transactionAttributes">
+            <props>
+                <!-- 配置事务的传播特性 -->
+                <prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="query*">PROPAGATION_NEVER</prop>
+                <prop key="get*">PROPAGATION_NEVER</prop>
+            </props>
+        </property>
+    </bean>
+</beans>
