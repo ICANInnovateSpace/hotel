@@ -13,7 +13,7 @@
 <body>
     <table align="center">
         <form action="/user/update" method="post" enctype="multipart/form-data">
-            <caption align="center">用户登陆</caption>
+            <caption align="center">修改用户信息</caption>
             <tr>
                 <td>用户名：</td>
                 <td><input type="text" name="uname"/></td>
@@ -30,7 +30,7 @@
                 <td><input type="file" name="photo"/></td>
             </tr>
             <tr>
-                <td><input type="submit" value="登陆"/></td>
+                <td><input type="submit" value="提交"/></td>
                 <td><input type="reset" value="重置"/></td>
             </tr>
         </form>

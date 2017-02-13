@@ -1,6 +1,7 @@
-package com.ican.hotel.dao;
+package com.ican.hotel.dao.impl;
 
 import com.ican.hotel.beans.User;
+import com.ican.hotel.dao.IUserDao;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Created by mrzhou on 17-2-9.
  * <p>
- * 操作数据库User表的类
+ * 操作数据库User表的实现类
  * 实现用户的增、删、查、改
  */
 public class UserDao implements IUserDao {

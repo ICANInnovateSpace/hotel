@@ -3,7 +3,12 @@ package com.ican.hotel.controller;
 import com.ican.hotel.beans.User;
 import com.ican.hotel.service.IUserManager;
 import com.ican.hotel.utils.ResultResponseUtil;
+import com.ican.hotel.validation.ValidGroup_1;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by mrzhou on 17-2-9.
@@ -60,16 +67,33 @@ public class UserController {
      * 响应注册成功或失败的json数据
      *
      * @param user     用户数据
+     * @param bindingResult 绑定表单校验的结果
      * @param response http响应
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public void register(User user, HttpServletResponse response) {
-        if (userManager.add(user)) {
-            //注册成功
-            ResultResponseUtil.success(response);
+    public void register(@Validated(value = {ValidGroup_1.class}) User user, BindingResult bindingResult, HttpServletResponse response) {
+        //表单校验
+        if (bindingResult.hasErrors()) {
+            Map<String,Object> data = new HashMap<>();
+            data.put("state_code","0");
+            data.put("result","FAIL");
+            for (FieldError fieldError :
+                    bindingResult.getFieldErrors()) {
+                data.put(fieldError.getField(),fieldError.getDefaultMessage());
+            }
+            ResultResponseUtil.returnJson(response,data);
         } else {
-            //注册失败
-            ResultResponseUtil.fail(response);
+            if (userManager.add(user)) {
+                //注册成功
+                ResultResponseUtil.success(response);
+            } else {
+                //注册失败
+                Map<String,Object> data = new HashMap<>();
+                data.put("state_code","0");
+                data.put("result","FAIL");
+                data.put("exist","用户名已存在");
+                ResultResponseUtil.returnJson(response,data);
+            }
         }
     }
 
@@ -79,18 +103,35 @@ public class UserController {
      * 登陆成功响应用户信息/失败响应默认失败信息（json格式）
      *
      * @param user     用户数据
+     * @param bindingResult 绑定表单校验的结果
      * @param response http响应
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public void login(User user, HttpServletResponse response) {
-        //验证用户名、密码
-        User queryUser = userManager.query(user.getUname(), user.getUpsw());
-        if (queryUser == null) {
-            //登陆失败
-            ResultResponseUtil.fail(response);
-        } else {
-            //登陆成功
-            ResultResponseUtil.returnJson(response, queryUser);
+    public void login(@Validated User user, BindingResult bindingResult,HttpServletResponse response) {
+        //表单校验
+        if (bindingResult.hasErrors()){
+            Map<String,Object> data = new HashMap<>();
+            data.put("state_code","0");
+            data.put("result","FAIL");
+            for (FieldError fieldError :
+                    bindingResult.getFieldErrors()) {
+                data.put(fieldError.getField(),fieldError.getDefaultMessage());
+            }
+            ResultResponseUtil.returnJson(response,data);
+        }else {
+            //验证用户名、密码
+            User queryUser = userManager.query(user.getUname(), user.getUpsw());
+            if (queryUser == null) {
+                //登陆失败
+                Map<String, Object> data = new HashMap<>();
+                data.put("state_code", "0");
+                data.put("result", "FAIL");
+                data.put("not_exist", "用户名或密码错误");
+                ResultResponseUtil.returnJson(response, data);
+            } else {
+                //登陆成功
+                ResultResponseUtil.returnJson(response, queryUser);
+            }
         }
     }
 
@@ -119,7 +160,7 @@ public class UserController {
             //判断是否是multipart请求，即是否包含有文件上传等操作
             if (commonsMultipartResolver.isMultipart(request)) {
                 //存储照片（有上传则存储，没有则不会存储）
-                this.storePhoto(user,request);
+                this.storePhoto(user, request);
             }
             //更新用户信息
             userManager.update(user);
@@ -129,13 +170,68 @@ public class UserController {
     }
 
     /**
+     * 修改密码
+     * 访问url： http://ipAddress:8080/user/changePassword
+     * 成功返回用户信息/失败返回提示信息（json格式）
+     *
+     * @param user 用户信息
+     * @param bindingResult 绑定表单校验的结果
+     * @param newPassword 新密码
+     * @param response http响应
+     * */
+    @RequestMapping(value = "/changePassword",method = RequestMethod.POST)
+    public void chanagePassword(@Validated User user,BindingResult bindingResult, String newPassword, HttpServletResponse response){
+        //先校验旧密码、新密码是否为空
+        //接着判断查出来的用户是否为空
+        //然后判断旧密码是否匹配
+        //改密码
+        if (newPassword ==null || newPassword.equals("")){
+            Map<String,Object> data = new HashMap<>();
+            data.put("state_code","0");
+            data.put("result","FAIL");
+            data.put("empty","新密码不能为空");
+            ResultResponseUtil.returnJson(response,data);
+        }else if (bindingResult.hasErrors()){
+            Map<String,Object> data = new HashMap<>();
+            data.put("state_code","0");
+            data.put("result","FAIL");
+            for (FieldError fieldError :
+                    bindingResult.getFieldErrors()) {
+                data.put(fieldError.getField(),fieldError.getDefaultMessage());
+            }
+            ResultResponseUtil.returnJson(response,data);
+        }else {
+            User queryUser = userManager.query(user.getUname());
+            if (queryUser == null){
+                Map<String,Object> data = new HashMap<>();
+                data.put("state_code","0");
+                data.put("result","FAIL");
+                data.put("not_exist","用户不存在");
+                ResultResponseUtil.returnJson(response,data);
+            }else {
+                if (queryUser.getUpsw().equals(user.getUpsw())){
+                    queryUser.setUpsw(newPassword);
+                    userManager.update(queryUser);
+                    ResultResponseUtil.returnJson(response,queryUser);
+                }else {
+                    Map<String,Object> data = new HashMap<>();
+                    data.put("state_code","0");
+                    data.put("result","FAIL");
+                    data.put("not_match","旧密码不匹配");
+                    ResultResponseUtil.returnJson(response,data);
+                }
+            }
+        }
+    }
+
+    /**
      * 在判断是multipart之后，我把存储文件的过程拿出来封装成方法了，
      * 这样update的方法看起来舒服些。
      *
-     * @param user 代更新用户信息
+     * @param user    代更新用户信息
      * @param request http请求
-     * */
-    private void storePhoto(User user,HttpServletRequest request) throws IOException {
+     */
+    private void storePhoto(User user, HttpServletRequest request) throws IOException {
         //转换请求类型
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         //取得文件名称的迭代器

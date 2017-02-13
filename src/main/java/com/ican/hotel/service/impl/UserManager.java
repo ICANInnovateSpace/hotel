@@ -1,7 +1,8 @@
-package com.ican.hotel.service;
+package com.ican.hotel.service.impl;
 
 import com.ican.hotel.beans.User;
 import com.ican.hotel.dao.IUserDao;
+import com.ican.hotel.service.IUserManager;
 
 import java.util.List;
 

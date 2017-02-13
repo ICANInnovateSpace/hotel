@@ -1,15 +1,34 @@
 package com.ican.hotel.beans;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Created by mrzhou on 17-2-12.
  * 客房Room Entity
  */
+@Entity
+@Table(name = "Room")
 public class Room {
+    @Id
+    @Column(length = 20)
+    @GenericGenerator(name
+            = "paymentableGenerator",
+            strategy = "uuid")
     private String rid;
+    @Column(length = 2)
     private int rfloor;
+    @Column(length = 1)
     private String rtype;
+    @Column(length = 4)
     private int rprice;
+    @Column(length = 1)
     private int rnum;
+    @Column(length = 255)
     private String rphoto;
     private String other1;
     private String ohter2;

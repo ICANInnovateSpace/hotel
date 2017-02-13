@@ -10,74 +10,116 @@
     <schema id="4" parent="1" name="mysql"/>
     <schema id="5" parent="1" name="performance_schema"/>
     <schema id="6" parent="1" name="sys"/>
-    <table id="7" parent="2" name="User"/>
-    <column id="8" parent="7" name="uid">
+    <table id="7" parent="2" name="Room"/>
+    <table id="8" parent="2" name="User"/>
+    <column id="9" parent="7" name="rid">
+      <Position>1</Position>
+      <DataType>varchar(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="10" parent="7" name="rfloor">
+      <Position>2</Position>
+      <DataType>int(2)|0</DataType>
+    </column>
+    <column id="11" parent="7" name="rtype">
+      <Position>3</Position>
+      <DataType>varchar(1)|0</DataType>
+    </column>
+    <column id="12" parent="7" name="rprice">
+      <Position>4</Position>
+      <DataType>int(4)|0</DataType>
+    </column>
+    <column id="13" parent="7" name="rnum">
+      <Position>5</Position>
+      <DataType>int(1)|0</DataType>
+    </column>
+    <column id="14" parent="7" name="rphoto">
+      <Position>6</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="15" parent="7" name="other1">
+      <Position>7</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="16" parent="7" name="other2">
+      <Position>8</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="17" parent="7" name="other3">
+      <Position>9</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <key id="18" parent="7" name="PRIMARY">
+      <ColNames>rid</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="19" parent="8" name="uid">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="9" parent="7" name="uname">
+    <column id="20" parent="8" name="uname">
       <Position>2</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="10" parent="7" name="ureal">
+    <column id="21" parent="8" name="ureal">
       <Position>3</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="11" parent="7" name="usex">
+    <column id="22" parent="8" name="usex">
       <Position>4</Position>
       <DataType>varchar(10)|0</DataType>
     </column>
-    <column id="12" parent="7" name="uborn">
+    <column id="23" parent="8" name="uborn">
       <Position>5</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="13" parent="7" name="uphone">
+    <column id="24" parent="8" name="uphone">
       <Position>6</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="14" parent="7" name="uphoto">
+    <column id="25" parent="8" name="uphoto">
       <Position>7</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="15" parent="7" name="ucard">
+    <column id="26" parent="8" name="ucard">
       <Position>8</Position>
       <DataType>varchar(18)|0</DataType>
     </column>
-    <column id="16" parent="7" name="ubank">
+    <column id="27" parent="8" name="ubank">
       <Position>9</Position>
       <DataType>varchar(19)|0</DataType>
     </column>
-    <column id="17" parent="7" name="upsw">
+    <column id="28" parent="8" name="upsw">
       <Position>10</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="18" parent="7" name="ustate">
+    <column id="29" parent="8" name="ustate">
       <Position>11</Position>
       <DataType>varchar(1)|0</DataType>
     </column>
-    <column id="19" parent="7" name="other1">
+    <column id="30" parent="8" name="other1">
       <Position>12</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="20" parent="7" name="other2">
+    <column id="31" parent="8" name="other2">
       <Position>13</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="21" parent="7" name="other3">
+    <column id="32" parent="8" name="other3">
       <Position>14</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <index id="22" parent="7" name="uname">
+    <index id="33" parent="8" name="uname">
       <ColNames>uname</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="23" parent="7" name="PRIMARY">
+    <key id="34" parent="8" name="PRIMARY">
       <ColNames>uid</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="24" parent="7" name="uname">
+    <key id="35" parent="8" name="uname">
       <ColNames>uname</ColNames>
       <UnderlyingIndexName>uname</UnderlyingIndexName>
     </key>

@@ -6,12 +6,17 @@
 
     <!-- dao层 -->
     <!-- 用户数据库操作类 -->
-    <bean id="userDao" class="com.ican.hotel.dao.UserDao">
+    <bean id="userDao" class="com.ican.hotel.dao.impl.UserDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <!-- 客房数据库操作类 -->
+    <bean id="roomDao" class="com.ican.hotel.dao.impl.RoomDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <!-- service层 -->
     <!-- 用户Manager -->
-    <bean id="userManagerBase" class="com.ican.hotel.service.UserManager">
+    <bean id="userManagerBase" class="com.ican.hotel.service.impl.UserManager">
         <property name="userDao" ref="userDao"/>
     </bean>
     <!-- 用userManagerBase继承transactionBase（事务管理）类 -->

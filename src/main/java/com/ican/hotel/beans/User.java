@@ -1,6 +1,12 @@
 package com.ican.hotel.beans;
 
+import com.ican.hotel.validation.ValidGroup_2;
+import com.ican.hotel.validation.ValidGroup_1;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.Past;
 import java.sql.Date;
 
 /**
@@ -14,6 +20,7 @@ public class User {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(length = 11)
     private int uid;
+    @NotEmpty(message = "请输入用户名",groups = {ValidGroup_1.class,ValidGroup_2.class})
     @Column(length = 20,unique = true)
     private String uname;
     @Column(length = 20)
@@ -21,24 +28,28 @@ public class User {
     @Column(length = 10)
     private String usex;
     @Column
+    @Past
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date uborn;
+    @NotEmpty(message = "请输入手机号码",groups = {ValidGroup_1.class})
     @Column(length = 20)
     private String uphone;
-    @Column(length = 254)
+    @Column(length = 255)
     private String uphoto;
     @Column(length = 18)
     private String ucard;
     @Column(length = 19)
     private String ubank;
+    @NotEmpty(message = "请输入密码",groups = {ValidGroup_1.class,ValidGroup_2.class})
     @Column(length = 20)
     private String upsw;
     @Column(length = 1)
     private String ustate;
-    @Column(length = 254)
+    @Column(length = 255)
     private String other1;
-    @Column(length = 254)
+    @Column(length = 255)
     private String other2;
-    @Column(length = 254)
+    @Column(length = 255)
     private String other3;
 
     public int getUid() {
