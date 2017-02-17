@@ -2,12 +2,14 @@ package com.ican.hotel.beans;
 
 import com.ican.hotel.validation.ValidGroup_2;
 import com.ican.hotel.validation.ValidGroup_1;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Past;
-import java.sql.Date;
+import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 /**
  * Created by mrzhou on 17-2-9.
@@ -20,7 +22,7 @@ public class User {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(length = 11)
     private int uid;
-    @NotEmpty(message = "请输入用户名",groups = {ValidGroup_1.class,ValidGroup_2.class})
+    @NotEmpty(message = "用户名不能为空",groups = {ValidGroup_1.class,ValidGroup_2.class})
     @Column(length = 20,unique = true)
     private String uname;
     @Column(length = 20)
@@ -29,9 +31,9 @@ public class User {
     private String usex;
     @Column
     @Past
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date uborn;
-    @NotEmpty(message = "请输入手机号码",groups = {ValidGroup_1.class})
+    @Pattern(regexp = "^((13[0-9])|(15[^4,\\D])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$",message = "请输入正确的手机号",groups = {ValidGroup_1.class})
     @Column(length = 20)
     private String uphone;
     @Column(length = 255)
@@ -40,16 +42,16 @@ public class User {
     private String ucard;
     @Column(length = 19)
     private String ubank;
-    @NotEmpty(message = "请输入密码",groups = {ValidGroup_1.class,ValidGroup_2.class})
+    @Length(min=6, max=20,message = "密码长度必须在{min}到{max}之间",groups = {ValidGroup_1.class,ValidGroup_2.class})
     @Column(length = 20)
     private String upsw;
     @Column(length = 1)
     private String ustate;
-    @Column(length = 255)
+    @Column
     private String other1;
-    @Column(length = 255)
+    @Column
     private String other2;
-    @Column(length = 255)
+    @Column
     private String other3;
 
     public int getUid() {

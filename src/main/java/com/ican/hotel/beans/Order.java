@@ -1,20 +1,41 @@
 package com.ican.hotel.beans;
 
-import java.sql.Date;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import javax.validation.constraints.Future;
+import java.util.Date;
 
 /**
  * Created by mrzhou on 17-2-12.
  * 订单Order Entiry
  */
+@Entity
+@Table(name = "MyOrder")
 public class Order {
+    @Id
+    @GenericGenerator(name = "systemUUID", strategy = "uuid")
+    @GeneratedValue(generator = "systemUUID")
+    @Column(length = 20)
     private String oid;
+    @Column(length = 20)
     private String orid;
+    @Column(length = 11)
     private int ouid;
+    @Column
+    @Future(message = "请选择正确的入住日期")
     private Date odate;
+    @Column
     private int odays;
+    @Column
+    private Date oquit;
+    @Column(length = 11)
     private int otatol;
+    @Column
     private String other1;
+    @Column
     private String other2;
+    @Column
     private String other3;
 
     public String getOid() {
@@ -56,6 +77,10 @@ public class Order {
     public void setOdays(int odays) {
         this.odays = odays;
     }
+
+    public Date getOquit() { return oquit; }
+
+    public void setOquit(Date oquit) { this.oquit = oquit; }
 
     public int getOtatol() {
         return otatol;

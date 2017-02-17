@@ -2,10 +2,7 @@ package com.ican.hotel.beans;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by mrzhou on 17-2-12.
@@ -16,9 +13,6 @@ import javax.persistence.Table;
 public class Room {
     @Id
     @Column(length = 20)
-    @GenericGenerator(name
-            = "paymentableGenerator",
-            strategy = "uuid")
     private String rid;
     @Column(length = 2)
     private int rfloor;
@@ -28,10 +22,13 @@ public class Room {
     private int rprice;
     @Column(length = 1)
     private int rnum;
-    @Column(length = 255)
+    @Column
     private String rphoto;
+    @Column
     private String other1;
+    @Column
     private String ohter2;
+    @Column
     private String other3;
 
     public String getRid() {

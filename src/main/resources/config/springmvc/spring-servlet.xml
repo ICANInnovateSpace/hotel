@@ -20,6 +20,7 @@
         <property name="defaultEncoding" value="utf8"/>
         <property name="maxUploadSize" value="10485760"/>
         <property name="maxInMemorySize" value="10485760"/>
+        <property name="uploadTempDir" value="/upload"/>
      </bean>
 
     <!-- 配置校验器 -->
@@ -29,21 +30,24 @@
         <!-- 指定校验使用的资源文件，在文件中配置校验错误信息，如果不指定则默认使用classpath下面的ValidationMessages.properties文件 -->
         <!--<property name="validationMessageSource" ref="messageSource"/>-->
     </bean>
-    <!-- 校验错误信息配置文件
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        &lt;!&ndash; 资源文件名 &ndash;&gt;
-        <property name="basenames">
-            <list>
-                <value>config.validation.UserValidationMessage</value>
-            </list>
-        </property>
-        &lt;!&ndash; 资源文件编码格式 &ndash;&gt;
+     <!--校验错误信息配置文件-->
+    <!--<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+         &lt;!&ndash;资源文件名&ndash;&gt;
+        <property name="basename" value="validation.UserValidationMessages"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="useCodeAsDefaultMessage" value="false"/>
+         &lt;!&ndash;资源文件编码格式&ndash;&gt;
         <property name="fileEncodings" value="utf-8"/>
-        &lt;!&ndash; 对资源文件内容缓存时间，单位秒 &ndash;&gt;
+         &lt;!&ndash;对资源文件内容缓存时间，单位秒&ndash;&gt;
         <property name="cacheSeconds" value="120"/>
     </bean>-->
 
+    <!-- 配置静态资源 -->
+    <mvc:resources mapping="/upload/**" location="/upload/"/>
+    <mvc:resources mapping="/rooms/**" location="/rooms/"/>
+    <mvc:resources mapping="/plugins/**" location="/plugins/"/>
     <!-- 使用注解，配置包扫描 -->
-    <mvc:annotation-driven validator="validator" />
+    <mvc:annotation-driven validator="validator" conversion-service="conversion-service"  />
     <context:component-scan base-package="com.ican.hotel.controller"/>
+    <bean id="conversion-service" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
 </beans>

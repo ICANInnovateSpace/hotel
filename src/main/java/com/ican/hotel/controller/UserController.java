@@ -4,7 +4,7 @@ import com.ican.hotel.beans.User;
 import com.ican.hotel.service.IUserManager;
 import com.ican.hotel.utils.ResultResponseUtil;
 import com.ican.hotel.validation.ValidGroup_1;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.ican.hotel.validation.ValidGroup_2;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -107,7 +107,7 @@ public class UserController {
      * @param response http响应
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public void login(@Validated User user, BindingResult bindingResult,HttpServletResponse response) {
+    public void login(@Validated(value = {ValidGroup_2.class}) User user, BindingResult bindingResult, HttpServletResponse response) {
         //表单校验
         if (bindingResult.hasErrors()){
             Map<String,Object> data = new HashMap<>();
@@ -241,7 +241,7 @@ public class UserController {
             if ("photo".equals(fileName)) {
                 //取得头像的照片文件
                 MultipartFile file = multipartRequest.getFile(fileName);
-                if (file != null) {
+                if (file != null && !file.isEmpty()) {
                     //存储照片到指定文件夹
                     //首先定义照片的存储路径
                     String uploadPath = request.getRealPath("/upload");
