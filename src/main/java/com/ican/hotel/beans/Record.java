@@ -15,16 +15,16 @@ public class Record {
     @Id
     @GenericGenerator(name = "systemUUID", strategy = "uuid")
     @GeneratedValue(generator = "systemUUID")
-    @Column(length = 20)
+    @Column(length = 32)
     private String rid;
-    @Column(length = 11)
-    private int ruid;
+    @Column(length = 32)
+    private String ruid;
     @Column(length = 20)
     private String rrid;
     @Column
     private Date rdate;
     @Column(length = 3)
-    private int rdays;
+    private String rdays;
     @Column
     private String other1;
     @Column
@@ -40,11 +40,11 @@ public class Record {
         this.rid = rid;
     }
 
-    public int getRuid() {
+    public String getRuid() {
         return ruid;
     }
 
-    public void setRuid(int ruid) {
+    public void setRuid(String ruid) {
         this.ruid = ruid;
     }
 
@@ -64,11 +64,11 @@ public class Record {
         this.rdate = rdate;
     }
 
-    public int getRdays() {
+    public String getRdays() {
         return rdays;
     }
 
-    public void setRdays(int rdays) {
+    public void setRdays(String rdays) {
         this.rdays = rdays;
     }
 

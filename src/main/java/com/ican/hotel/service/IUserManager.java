@@ -10,25 +10,27 @@ import java.util.List;
  */
 public interface IUserManager {
     /**
-     * 添加用户到数据库
+     * 添加用户信息
      *
      * @param user 用户数据
+     * @return 成功或失败
      * */
     boolean add(User user);
 
     /**
-     * 更新用户数据到数据库
+     * 更新用户信息
      *
      * @param user 用户数据
      * */
     void update(User user);
 
     /**
-     * 从数据库删除一条用户记录
+     * 根据用户id删除用户信息
      *
      * @param uid 用户id
+     * @return 成功或失败
      * */
-    boolean delete(int uid);
+    boolean delete(String uid);
 
     /**
      * 通过用户id查询用户
@@ -36,7 +38,7 @@ public interface IUserManager {
      * @param uid 用户id
      * @return 一个用户
      * */
-    User query(int uid);
+    User queryByUid(String uid);
 
     /**
      * 通过用户名查询用户
@@ -44,7 +46,7 @@ public interface IUserManager {
      * @param uname 用户名
      * @return 一个用户
      * */
-    User query(String uname);
+    User queryByUname(String uname);
 
     /**
      * 通过用户名、密码查询用户
@@ -56,7 +58,7 @@ public interface IUserManager {
     User query(String uname,String upsw);
 
     /**
-     * 返回用户表里面的所有用户信息
+     * 查询所有用户信息
      *
      * @return 用户列表
      * */

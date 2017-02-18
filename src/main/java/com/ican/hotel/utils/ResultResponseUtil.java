@@ -1,6 +1,8 @@
 package com.ican.hotel.utils;
 
 import com.google.gson.Gson;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -47,46 +49,35 @@ public class ResultResponseUtil {
      * 默认值：{"state_code":"1","result":"SUCCESS"}
      */
     public static void success(HttpServletResponse response) {
-        PrintWriter writer = null;
-        try {
-            writer = response.getWriter();
-            Map<String, Object> data = new HashMap<>();
-            data.put("state_code", "1");
-            data.put("result", "SUCCESS");
-            Gson gson = new Gson();
-            String json = gson.toJson(data);
-            writer.print(json);
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
-        }
+        Map<String, Object> data = new HashMap<>();
+        data.put("state_code", "1");
+        data.put("result", "SUCCESS");
+        ResultResponseUtil.returnJson(response, data);
     }
 
     /**
      * 默认失败的响应
-     * 默认值：{"state_code":"0","result":"FAIL"}
+     * 默认值：{"state_code":"1","result":"SUCCESS"}
      */
-    public static void fail(HttpServletResponse response) {
-        PrintWriter writer = null;
-        try {
-            writer = response.getWriter();
-            Map<String, Object> data = new HashMap<>();
-            data.put("state_code", "0");
-            data.put("result", "FAIL");
-            Gson gson = new Gson();
-            String json = gson.toJson(data);
-            writer.print(json);
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
+    public static void fail(HttpServletResponse response){
+        Map<String, Object> data = new HashMap<>();
+        data.put("state_code", "0");
+        data.put("result", "FAIL");
+        ResultResponseUtil.returnJson(response, data);
+    }
+
+    /**
+     * 附加信息的失败的响应
+     * 值：{"state_code":"0","result":"FAIL",....}
+     */
+    public static void fail(BindingResult bindingResult, HttpServletResponse response) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("state_code", "0");
+        data.put("result", "FAIL");
+        for (FieldError fieldError :
+                bindingResult.getFieldErrors()) {
+            data.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
+        ResultResponseUtil.returnJson(response, data);
     }
 }

@@ -1,19 +1,24 @@
 package com.ican.hotel.controller;
 
+import com.ican.hotel.beans.Order;
+import com.ican.hotel.beans.Room;
+import com.ican.hotel.service.IOrderManager;
 import com.ican.hotel.service.IRoomManager;
+import com.ican.hotel.utils.OrderProcessUitl;
 import com.ican.hotel.utils.ResultResponseUtil;
 import com.ican.hotel.validation.beans.ValidateOrder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,10 +30,8 @@ import java.util.Map;
 public class RoomController {
     @Resource(name = "roomManager")
     private IRoomManager roomManager;
-
-    public void setRoomManager(IRoomManager roomManager) {
-        this.roomManager = roomManager;
-    }
+    @Resource(name = "orderManager")
+    private IOrderManager orderManager;
 
     /**
      * 转到查询客房的页面
@@ -41,19 +44,31 @@ public class RoomController {
     }
 
     @RequestMapping(value = "/query",method = RequestMethod.POST)
-    public void query(@Validated ValidateOrder order, BindingResult bindingResult, HttpServletResponse response){
+    public void query(@Validated ValidateOrder order, BindingResult bindingResult, HttpServletResponse response) throws ParseException {
         //表单校验
         if (bindingResult.hasErrors()){
-            Map<String,Object> data = new HashMap<>();
-            data.put("state_code","0");
-            data.put("result","FAIL");
-            for (FieldError fieldError :
-                    bindingResult.getFieldErrors()) {
-                data.put(fieldError.getField(),fieldError.getDefaultMessage());
-            }
-            ResultResponseUtil.returnJson(response,data);
+            ResultResponseUtil.fail(bindingResult, response);
         }else {
-
+            String rtype = order.getRtype();
+            List<Room> rooms = null;
+            //若选择了房间类型，则查询某类房间，否则查询全部房间
+            if (rtype == null || rtype.equals("")){
+                rooms = roomManager.getRooms();
+            }else {
+                rooms = roomManager.queryByRtype(rtype);
+            }
+            //查询全部订单
+            List<Order> orders = orderManager.getOrders();
+            List<Room> freeRooms = OrderProcessUitl.getFreeRooms(rooms,orders,order.getOrderDate(),order.getDays());
+            if (freeRooms == null){
+                Map<String,Object> data = new HashMap<>();
+                data.put("state_code", "1");
+                data.put("result", "SUCCESS");
+                data.put("full","客房已满");
+                ResultResponseUtil.returnJson(response,data);
+            }else {
+                ResultResponseUtil.returnJson(response,freeRooms);
+            }
         }
     }
 }

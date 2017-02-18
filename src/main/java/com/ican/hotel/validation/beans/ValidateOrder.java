@@ -13,10 +13,8 @@ import java.util.Date;
 public class ValidateOrder {
     private String rtype;
     @Future(message = "请选择正确的入住日期")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date orderDate;
-    @NotEmpty(message = "请选择入住时间")
-    private String orderTime;
     @NotEmpty(message = "请输入入住天数")
     private String days;
 
@@ -34,14 +32,6 @@ public class ValidateOrder {
 
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public String getOrderTime() {
-        return orderTime;
-    }
-
-    public void setOrderTime(String orderTime) {
-        this.orderTime = orderTime;
     }
 
     public String getDays() {

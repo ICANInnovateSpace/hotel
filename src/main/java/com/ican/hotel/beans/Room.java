@@ -15,13 +15,13 @@ public class Room {
     @Column(length = 20)
     private String rid;
     @Column(length = 2)
-    private int rfloor;
+    private String rfloor;
     @Column(length = 1)
     private String rtype;
     @Column(length = 4)
-    private int rprice;
+    private String rprice;
     @Column(length = 1)
-    private int rnum;
+    private String rnum;
     @Column
     private String rphoto;
     @Column
@@ -39,11 +39,11 @@ public class Room {
         this.rid = rid;
     }
 
-    public int getRfloor() {
+    public String getRfloor() {
         return rfloor;
     }
 
-    public void setRfloor(int rfloor) {
+    public void setRfloor(String rfloor) {
         this.rfloor = rfloor;
     }
 
@@ -55,19 +55,19 @@ public class Room {
         this.rtype = rtype;
     }
 
-    public int getRprice() {
+    public String getRprice() {
         return rprice;
     }
 
-    public void setRprice(int rprice) {
+    public void setRprice(String rprice) {
         this.rprice = rprice;
     }
 
-    public int getRnum() {
+    public String getRnum() {
         return rnum;
     }
 
-    public void setRnum(int rnum) {
+    public void setRnum(String rnum) {
         this.rnum = rnum;
     }
 

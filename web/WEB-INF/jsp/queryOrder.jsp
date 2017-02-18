@@ -16,10 +16,21 @@
         .demo{margin:80px auto 40px auto;width:320px}
         .input{padding:6px;border:1px solid #d3d3d3}
     </style>
+    <script type="text/javascript">
+        function fun(){
+            var time;
+            var input = document.getElementsByTagName('input');
+            input[0].value = input[0].value + " " + input[1].value;
+            var form = document.forms[0];
+            form.action = "/room/query";
+            form.method = "post";
+            form.submit();
+        }
+    </script>
 
 </head>
 <body>
-<form action="/room/query" method="post">
+<form>
     <table align="center">
         <tr>
             <td>选择房间类型：</td>
@@ -43,7 +54,7 @@
             <td><input type="text" name="days"/></td>
         </tr>
         <tr>
-            <td><input type="submit" value="查询"/></td>
+            <td><input type="button" value="查询" onclick="fun();"/></td>
             <td><input type="reset" value="重置"/></td>
         </tr>
     </table>

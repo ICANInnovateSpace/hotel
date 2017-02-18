@@ -7,7 +7,6 @@ import com.ican.hotel.validation.ValidGroup_1;
 import com.ican.hotel.validation.ValidGroup_2;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,10 +35,6 @@ public class UserController {
     //注入spring-core核心容器中的bean（含事务管理）
     @Resource(name = "userManager")
     private IUserManager userManager;
-
-    public void setUserManager(IUserManager userManager) {
-        this.userManager = userManager;
-    }
 
     /**
      * 转到登陆页面
@@ -74,14 +69,7 @@ public class UserController {
     public void register(@Validated(value = {ValidGroup_1.class}) User user, BindingResult bindingResult, HttpServletResponse response) {
         //表单校验
         if (bindingResult.hasErrors()) {
-            Map<String,Object> data = new HashMap<>();
-            data.put("state_code","0");
-            data.put("result","FAIL");
-            for (FieldError fieldError :
-                    bindingResult.getFieldErrors()) {
-                data.put(fieldError.getField(),fieldError.getDefaultMessage());
-            }
-            ResultResponseUtil.returnJson(response,data);
+            ResultResponseUtil.fail(bindingResult,response);
         } else {
             if (userManager.add(user)) {
                 //注册成功
@@ -110,14 +98,7 @@ public class UserController {
     public void login(@Validated(value = {ValidGroup_2.class}) User user, BindingResult bindingResult, HttpServletResponse response) {
         //表单校验
         if (bindingResult.hasErrors()){
-            Map<String,Object> data = new HashMap<>();
-            data.put("state_code","0");
-            data.put("result","FAIL");
-            for (FieldError fieldError :
-                    bindingResult.getFieldErrors()) {
-                data.put(fieldError.getField(),fieldError.getDefaultMessage());
-            }
-            ResultResponseUtil.returnJson(response,data);
+            ResultResponseUtil.fail(bindingResult, response);
         }else {
             //验证用户名、密码
             User queryUser = userManager.query(user.getUname(), user.getUpsw());
@@ -147,7 +128,7 @@ public class UserController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public void update(User user, HttpServletRequest request, HttpServletResponse response) throws IOException {
         //首先查询是否含有该用户
-        User queryUser = userManager.query(user.getUname());
+        User queryUser = userManager.queryByUname(user.getUname());
         if (queryUser == null) {
             ResultResponseUtil.fail(response);
         } else {
@@ -192,16 +173,9 @@ public class UserController {
             data.put("empty","新密码不能为空");
             ResultResponseUtil.returnJson(response,data);
         }else if (bindingResult.hasErrors()){
-            Map<String,Object> data = new HashMap<>();
-            data.put("state_code","0");
-            data.put("result","FAIL");
-            for (FieldError fieldError :
-                    bindingResult.getFieldErrors()) {
-                data.put(fieldError.getField(),fieldError.getDefaultMessage());
-            }
-            ResultResponseUtil.returnJson(response,data);
+            ResultResponseUtil.fail(bindingResult, response);
         }else {
-            User queryUser = userManager.query(user.getUname());
+            User queryUser = userManager.queryByUname(user.getUname());
             if (queryUser == null){
                 Map<String,Object> data = new HashMap<>();
                 data.put("state_code","0");

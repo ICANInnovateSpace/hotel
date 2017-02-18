@@ -36,7 +36,7 @@ public interface IUserDao {
      * @param uid 用户id
      * @return 一个用户
      * */
-    User query(int uid);
+    User queryByUid(String uid);
 
     /**
      * 通过用户名、密码查询用户
@@ -53,7 +53,7 @@ public interface IUserDao {
      * @param uname 用户名
      * @return 一个用户
      * */
-    User query(String uname);
+    User queryByUname(String uname);
 
     /**
      * 返回用户表里面的所有用户信息

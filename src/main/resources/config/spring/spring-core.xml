@@ -13,6 +13,10 @@
     <bean id="roomDao" class="com.ican.hotel.dao.impl.RoomDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <!-- 订单数据库操作类 -->
+    <bean id="orderDao" class="com.ican.hotel.dao.impl.OrderDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
     <!-- service层 -->
     <!-- 用户Manager -->
@@ -23,11 +27,18 @@
     <bean id="roomManagerBase" class="com.ican.hotel.service.impl.RoomManager">
         <property name="roomDao" ref="roomDao"/>
     </bean>
-    <!-- 用userManagerBase继承transactionBase（事务管理）类 -->
+    <!-- 订单Manager -->
+    <bean id="orderManagerBase" class="com.ican.hotel.service.impl.OrderManager">
+        <property name="orderDao" ref="orderDao"/>
+    </bean>
+    <!-- 用***ManagerBase继承transactionBase（事务管理）类 -->
     <bean id="userManager" parent="transactionBase">
         <property name="target" ref="userManagerBase"/>
     </bean>
     <bean id="roomManager" parent="transactionBase">
         <property name="target" ref="roomManagerBase"/>
+    </bean>
+    <bean id="orderManager" parent="transactionBase">
+        <property name="target" ref="orderManagerBase"/>
     </bean>
 </beans>

@@ -1,6 +1,8 @@
 package com.ican.hotel.beans;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -16,21 +18,26 @@ public class Order {
     @Id
     @GenericGenerator(name = "systemUUID", strategy = "uuid")
     @GeneratedValue(generator = "systemUUID")
-    @Column(length = 20)
+    @Column(length = 32)
     private String oid;
     @Column(length = 20)
+    @NotEmpty(message = "房号不能为空")
     private String orid;
-    @Column(length = 11)
-    private int ouid;
+    @Column(length = 32)
+    @NotEmpty(message = "用户id不能为空")
+    private String ouid;
     @Column
     @Future(message = "请选择正确的入住日期")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date odate;
+    @Column(length = 3)
+    @NotEmpty(message = "请输入订房天数")
+    private String odays;
     @Column
-    private int odays;
-    @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date oquit;
-    @Column(length = 11)
-    private int otatol;
+    @Column(length = 10)
+    private String ototal;
     @Column
     private String other1;
     @Column
@@ -54,11 +61,11 @@ public class Order {
         this.orid = orid;
     }
 
-    public int getOuid() {
+    public String getOuid() {
         return ouid;
     }
 
-    public void setOuid(int ouid) {
+    public void setOuid(String ouid) {
         this.ouid = ouid;
     }
 
@@ -70,11 +77,11 @@ public class Order {
         this.odate = odate;
     }
 
-    public int getOdays() {
+    public String getOdays() {
         return odays;
     }
 
-    public void setOdays(int odays) {
+    public void setOdays(String odays) {
         this.odays = odays;
     }
 
@@ -82,12 +89,12 @@ public class Order {
 
     public void setOquit(Date oquit) { this.oquit = oquit; }
 
-    public int getOtatol() {
-        return otatol;
+    public String getOtotal() {
+        return ototal;
     }
 
-    public void setOtatol(int otatol) {
-        this.otatol = otatol;
+    public void setOtotal(String ototal) {
+        this.ototal = ototal;
     }
 
     public String getOther1() {

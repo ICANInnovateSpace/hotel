@@ -21,6 +21,7 @@ public class RoomManager implements IRoomManager{
      * 添加客房信息
      *
      * @param room 客房信息对象
+     * @return 成功或失败
      * */
     @Override
     public boolean add(Room room) {
@@ -34,6 +35,7 @@ public class RoomManager implements IRoomManager{
      * 删除客房信息
      *
      * @param room 客房信息对象
+     * @return 成功或失败
      * */
     @Override
     public boolean delete(Room room) {
@@ -47,6 +49,7 @@ public class RoomManager implements IRoomManager{
      * 更新客房信息
      *
      * @param room 客房信息对象
+     * @return 成功或失败
      */
     @Override
     public boolean update(Room room) {
@@ -79,7 +82,7 @@ public class RoomManager implements IRoomManager{
     }
 
     /**
-     * 返回全部客房信息
+     * 查询全部客房信息
      *
      * @return 客房信息列表
      */

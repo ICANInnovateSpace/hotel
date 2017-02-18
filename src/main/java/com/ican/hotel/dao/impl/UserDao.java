@@ -58,7 +58,7 @@ public class UserDao implements IUserDao {
      * @return 一个用户
      * */
     @Override
-    public User query(int uid) {
+    public User queryByUid(String uid) {
         return (User) sessionFactory.getCurrentSession().get(User.class,uid);
     }
 
@@ -87,7 +87,7 @@ public class UserDao implements IUserDao {
      * @return 一个用户
      * */
     @Override
-    public User query(String uname){
+    public User queryByUname(String uname){
         Query query = sessionFactory.getCurrentSession().createQuery("from User where uname=?0");
         query.setParameter("0",uname);
         List list = query.list();

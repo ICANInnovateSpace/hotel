@@ -19,14 +19,15 @@ public class UserManager implements IUserManager {
     }
 
     /**
-     * 添加用户到数据库
+     * 添加用户信息
      *
      * @param user 用户数据
+     * @return 成功或失败
      * */
     @Override
     public boolean add(User user) {
         //判断是否存在用户名相同的用户
-        if (userDao.query(user.getUname()) != null)
+        if (userDao.queryByUname(user.getUname()) != null)
             return false;
         //添加用户
         userDao.add(user);
@@ -34,7 +35,7 @@ public class UserManager implements IUserManager {
     }
 
     /**
-     * 更新用户数据到数据库
+     * 更新用户信息
      *
      * @param user 用户数据
      * */
@@ -44,13 +45,14 @@ public class UserManager implements IUserManager {
     }
 
     /**
-     * 从数据库删除一条用户记录
+     * 根据用户id删除用户信息
      *
      * @param uid 用户id
+     * @return 成功或失败
      * */
     @Override
-    public boolean delete(int uid) {
-        User user = userDao.query(uid);
+    public boolean delete(String uid) {
+        User user = userDao.queryByUid(uid);
         if ( user== null)
             return false;
         userDao.delete(user);
@@ -64,8 +66,8 @@ public class UserManager implements IUserManager {
      * @return 一个用户
      * */
     @Override
-    public User query(int uid) {
-        return userDao.query(uid);
+    public User queryByUid(String uid) {
+        return userDao.queryByUid(uid);
     }
 
     /**
@@ -87,12 +89,12 @@ public class UserManager implements IUserManager {
      * @return 一个用户
      * */
     @Override
-    public User query(String uname) {
-        return userDao.query(uname);
+    public User queryByUname(String uname) {
+        return userDao.queryByUname(uname);
     }
 
     /**
-     * 返回用户表里面的所有用户信息
+     * 查询所有用户信息
      *
      * @return 用户列表
      * */

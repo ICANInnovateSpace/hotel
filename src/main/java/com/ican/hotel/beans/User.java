@@ -2,6 +2,7 @@ package com.ican.hotel.beans;
 
 import com.ican.hotel.validation.ValidGroup_2;
 import com.ican.hotel.validation.ValidGroup_1;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,9 +20,10 @@ import java.util.Date;
 @Table(name = "User")
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(length = 11)
-    private int uid;
+    @GenericGenerator(name = "systemUUID", strategy = "uuid")
+    @GeneratedValue(generator = "systemUUID")
+    @Column(length = 32)
+    private String uid;
     @NotEmpty(message = "用户名不能为空",groups = {ValidGroup_1.class,ValidGroup_2.class})
     @Column(length = 20,unique = true)
     private String uname;
@@ -36,7 +38,7 @@ public class User {
     @Pattern(regexp = "^((13[0-9])|(15[^4,\\D])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$",message = "请输入正确的手机号",groups = {ValidGroup_1.class})
     @Column(length = 20)
     private String uphone;
-    @Column(length = 255)
+    @Column
     private String uphoto;
     @Column(length = 18)
     private String ucard;
@@ -54,11 +56,11 @@ public class User {
     @Column
     private String other3;
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 

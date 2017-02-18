@@ -6,5 +6,6 @@
     <session-factory>
         <mapping class="com.ican.hotel.beans.User"/>
         <mapping class="com.ican.hotel.beans.Room"/>
+        <mapping class="com.ican.hotel.beans.Order"/>
     </session-factory>
 </hibernate-configuration>

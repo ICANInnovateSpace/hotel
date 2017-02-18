@@ -14,6 +14,7 @@ public interface IRoomManager {
      * 添加客房信息
      *
      * @param room 客房信息对象
+     * @return 成功或失败
      * */
     boolean add(Room room);
 
@@ -21,6 +22,7 @@ public interface IRoomManager {
      * 删除客房信息
      *
      * @param room 客房信息对象
+     * @return 成功或失败
      * */
     boolean delete(Room room);
 
@@ -28,6 +30,7 @@ public interface IRoomManager {
      * 更新客房信息
      *
      * @param room 客房信息对象
+     * @return 成功或失败
      */
     boolean update(Room room);
 
@@ -48,7 +51,7 @@ public interface IRoomManager {
     List<Room> queryByRtype(String rtype);
 
     /**
-     * 返回全部客房信息
+     * 查询全部客房信息
      *
      * @return 客房信息列表
      */
