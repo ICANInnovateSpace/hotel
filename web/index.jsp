@@ -12,7 +12,7 @@
   </head>
   <body>
   <table align="center">
-    <form action="/user/register" method="post">
+    <form action="${pageContext.request.contextPath}/user/register" method="post">
       <tr>
         <td>用户名：</td>
         <td><input type="text" name="uname"/></td>

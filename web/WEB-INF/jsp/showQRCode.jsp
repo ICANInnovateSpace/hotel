@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>扫码支付</title>
-    <script type="text/javascript" src="../../plugins/qrcode/js/qrcode.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/plugins/qrcode/js/qrcode.js"></script>
     <script type="text/javascript">
         window.onload = function(){
             // 二维码对象

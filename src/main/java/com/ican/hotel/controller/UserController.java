@@ -258,8 +258,12 @@ public class UserController {
                     }
                     //将文件存储到该路径
                     file.transferTo(photoFile);
-                    //把照片的路径信息存到用户数据
-                    user.setUphoto(photoName);
+                    //把照片访问的url信息存到用户数据
+                    String url = request.getScheme() +"://" + request.getServerName()
+                            + ":" +request.getServerPort()
+                            + request.getContextPath() + "/upload/" + user.getUname()
+                            + "/" + file.getOriginalFilename();
+                    user.setUphoto(url);
                 }
             }
         }
