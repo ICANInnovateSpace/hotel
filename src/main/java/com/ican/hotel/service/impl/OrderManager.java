@@ -71,7 +71,7 @@ public class OrderManager implements IOrderManager {
      * @return 成功或失败
      * */
     @Override
-    public boolean deleteByOuid(int ouid) {
+    public boolean deleteByOuid(String ouid) {
         List<Order> orders = orderDao.queryByOuid(ouid);
         if (orders == null || orders.size() == 0)
             return false;
@@ -125,7 +125,7 @@ public class OrderManager implements IOrderManager {
      * @return 订单信息集合
      * */
     @Override
-    public List<Order> queryByOuid(int ouid) {
+    public List<Order> queryByOuid(String ouid) {
         return orderDao.queryByOuid(ouid);
     }
 

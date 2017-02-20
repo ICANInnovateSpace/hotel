@@ -9,9 +9,7 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src" />
-        </sourceRoots>
+        <sourceRoots />
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
@@ -73,5 +71,6 @@
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-validator:5.2.4.Final" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml:classmate:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.1.0.Final" level="project" />
+    <orderEntry type="library" name="wechatpay" level="project" />
   </component>
 </module>

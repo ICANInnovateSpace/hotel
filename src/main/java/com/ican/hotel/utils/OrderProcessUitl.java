@@ -2,6 +2,11 @@ package com.ican.hotel.utils;
 
 import com.ican.hotel.beans.Order;
 import com.ican.hotel.beans.Room;
+import com.ican.hotel.beans.User;
+import com.ican.wxpay.lib.WechatPayData;
+import com.ican.wxpay.lib.WechatPayException;
+import com.ican.wxpay.nativePay.NativePay;
+import com.ican.wxpay.util.OutTradeNo;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.text.ParseException;
@@ -49,8 +54,7 @@ public class OrderProcessUitl {
         }
         long quit = orderDate.getTime() + day * D;
         //算出退房的日期
-        String quitDateString = new SimpleDateFormat("yyyy-MM-dd 12:00").format(new Date(quit));
-        return quitDateString;
+        return new SimpleDateFormat("yyyy-MM-dd 12:00").format(new Date(quit));
     }
 
     /**
@@ -85,14 +89,8 @@ public class OrderProcessUitl {
                 //取出有冲突的订单的客房号
                 String orid = order.getOrid();
                 //将对应的客房号的客房从rooms中移除
-                Iterator<Room> iterator = rooms.iterator();
-                while (iterator.hasNext()) {
-                    Room room = iterator.next();
-                    //循环迭代找到匹配的客房号的客房
-                    if (orid.equals(room.getRid())) {
-                        iterator.remove();
-                    }
-                }
+                //循环迭代找到匹配的客房号的客房
+                rooms.removeIf(room -> orid.equals(room.getRid()));
             }
         }
         return rooms;
@@ -123,6 +121,12 @@ public class OrderProcessUitl {
         return true;
     }
 
+    /**
+     * 设置订单的退房日期和总金额
+     *
+     * @param room 订单指定的客房对象
+     * @param order 订单对象
+     * */
     public static void setQuitDateAndTotal(Room room,Order order) throws ParseException {
         //取得当前订单的入住时间和退房时间
         Date orderOdate = order.getOdate();
@@ -132,12 +136,59 @@ public class OrderProcessUitl {
         order.setOquit(parseQuitDate);
         //判断房间类型，设置价钱
         String rtype = room.getRtype();
-        if (rtype.equals("1")){
-            order.setOtotal(SINGLE * Integer.parseInt(odays) + "");
-        }else if (rtype.equals("2")){
-            order.setOtotal(DOUBLE * Integer.parseInt(odays) + "");
-        }else {
-            order.setOtotal(HOME * Integer.parseInt(odays) + "");
+        switch (rtype) {
+            case "1":
+                order.setOtotal(SINGLE * Integer.parseInt(odays) + "");
+                break;
+            case "2":
+                order.setOtotal(DOUBLE * Integer.parseInt(odays) + "");
+                break;
+            default:
+                order.setOtotal(HOME * Integer.parseInt(odays) + "");
+                break;
         }
+    }
+
+    /**
+     * 获取微信支付统一下单生成的url
+     * 用于生成二维码，微信扫码支付
+     *
+     * @param user 下单的用户对象
+     * @param order 订单对象
+     * */
+    public static String getPayUrl(User user, Order order){
+        NativePay nativePay = new NativePay();
+        String outTradeNo = OutTradeNo.generateOutTradeNo();
+        WechatPayData wechatPayData = new WechatPayData();
+        wechatPayData.addSubData("product_id",user.getUid());
+        wechatPayData.addSubData("out_trade_no", outTradeNo);
+        wechatPayData.addSubData("body","预定客房");
+        wechatPayData.addSubData("total_fee","1");
+        wechatPayData.addSubData("trade_type","NATIVE");
+        order.setOther1(outTradeNo);
+        try {
+            wechatPayData = nativePay.unifiedOrder(wechatPayData);
+        } catch (WechatPayException e) {
+            e.printStackTrace();
+        }
+        return "SUCCESS".equals(wechatPayData.getDataByKey("return_code")) && "SUCCESS".equals(wechatPayData.getDataByKey("result_code"))?(String)wechatPayData.getDataByKey("code_url"):null;
+    }
+
+    /**
+     * 微信支付订单查询
+     *
+     * @param order 订单信息//临时使用other1这个属性
+     * @return 是否查询到订单
+     * */
+    public static boolean queryOrder(Order order) {
+        NativePay nativePay = new NativePay();
+        WechatPayData wechatPayData = new WechatPayData();
+        wechatPayData.addSubData("out_trade_no", order.getOther1());
+        try {
+            wechatPayData = nativePay.queryOrder(wechatPayData);
+        } catch (WechatPayException e) {
+            e.printStackTrace();
+        }
+        return "SUCCESS".equals(wechatPayData.getDataByKey("return_code")) && "SUCCESS".equals(wechatPayData.getDataByKey("result_code")) && "SUCCESS".equals(wechatPayData.getDataByKey("trade_state"));
     }
 }

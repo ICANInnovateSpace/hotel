@@ -86,7 +86,7 @@ public class OrderDao implements IOrderDao {
      * @return 订单记录集合
      */
     @Override
-    public List<Order> queryByOuid(int ouid) {
+    public List<Order> queryByOuid(String ouid) {
         Query query = sessionFactory.getCurrentSession().createQuery("from Order where ouid=?0");
         query.setParameter("0", ouid);
         List list = query.list();

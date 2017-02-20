@@ -1,6 +1,10 @@
 package com.ican.hotel.controller;
 
+import com.ican.hotel.beans.Order;
+import com.ican.hotel.beans.Room;
 import com.ican.hotel.beans.User;
+import com.ican.hotel.service.IOrderManager;
+import com.ican.hotel.service.IRoomManager;
 import com.ican.hotel.service.IUserManager;
 import com.ican.hotel.utils.ResultResponseUtil;
 import com.ican.hotel.validation.ValidGroup_1;
@@ -19,9 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by mrzhou on 17-2-9.
@@ -35,6 +37,10 @@ public class UserController {
     //注入spring-core核心容器中的bean（含事务管理）
     @Resource(name = "userManager")
     private IUserManager userManager;
+    @Resource(name = "orderManager")
+    private IOrderManager orderManager;
+    @Resource(name = "roomManager")
+    private IRoomManager roomManager;
 
     /**
      * 转到登陆页面
@@ -111,7 +117,24 @@ public class UserController {
                 ResultResponseUtil.returnJson(response, data);
             } else {
                 //登陆成功
-                ResultResponseUtil.returnJson(response, queryUser);
+                //判断用户状态，是否有订房
+                if ("1".equals(queryUser.getUstate())){
+                    List<Order> orders = orderManager.queryByOuid(queryUser.getUid());
+                    List<Room> rooms = new ArrayList<>();
+                    for (Order order :
+                            orders) {
+                        Room room = roomManager.queryByRid(order.getOrid());
+                        rooms.add(room);
+                    }
+                    //返回用户、订单、订房信息
+                    List<Object> result = new ArrayList<>();
+                    result.add(queryUser);
+                    result.add(orders);
+                    result.add(rooms);
+                    ResultResponseUtil.returnJson(response,result);
+                }else {
+                    ResultResponseUtil.returnJson(response, queryUser);
+                }
             }
         }
     }

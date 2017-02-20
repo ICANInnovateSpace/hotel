@@ -40,7 +40,7 @@ public interface IOrderManager {
      * @param ouid 用户id
      * @return 成功或失败
      * */
-    boolean deleteByOuid(int ouid);
+    boolean deleteByOuid(String ouid);
 
     /**
      * 更新订单信息
@@ -72,7 +72,7 @@ public interface IOrderManager {
      * @param ouid 用户id
      * @return 订单信息集合
      * */
-    List<Order> queryByOuid(int ouid);
+    List<Order> queryByOuid(String ouid);
 
     /**
      * 查询所有订单信息

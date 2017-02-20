@@ -103,7 +103,7 @@
     </column>
     <column id="29" parent="8" name="rdate">
       <Position>4</Position>
-      <DataType>date|0</DataType>
+      <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="30" parent="8" name="rdays">
@@ -218,7 +218,7 @@
     </column>
     <column id="54" parent="10" name="uborn">
       <Position>5</Position>
-      <DataType>datetime|0</DataType>
+      <DataType>date|0</DataType>
     </column>
     <column id="55" parent="10" name="uphone">
       <Position>6</Position>

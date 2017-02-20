@@ -53,7 +53,7 @@ public interface IOrderDao {
      * @param ouid 用户id
      * @return 订单记录集合
      * */
-    List<Order> queryByOuid(int ouid);
+    List<Order> queryByOuid(String ouid);
 
     /**
      * 获取所有订单记录
