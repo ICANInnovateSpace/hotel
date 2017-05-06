@@ -9,12 +9,13 @@
 <html>
 <head>
     <title>扫码支付</title>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/plugins/qrcode/js/jquery-3.1.1.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugins/qrcode/js/qrcode.js"></script>
     <script type="text/javascript">
         window.onload = function(){
             // 二维码对象
             var qrcode;
-            var value = '<%--<%=request.getSession().getAttribute("url")%>--%>${url}';
+            var value = '${order.other2}';
             // 创建二维码
             qrcode = new QRCode(document.getElementById("qrcode"), {
                 width : 200,//设置宽高

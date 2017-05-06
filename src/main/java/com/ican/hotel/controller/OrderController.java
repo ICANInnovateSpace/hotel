@@ -58,7 +58,7 @@ public class OrderController {
      * @param response      http响应
      */
     @RequestMapping(value = "/downOrder", method = RequestMethod.POST)
-    public void downOrder(@Validated Order order, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws ParseException {
+    public String downOrder(@Validated Order order, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws ParseException {
         //表单校验
         if (bindingResult.hasErrors()) {
             ResultResponseUtil.fail(bindingResult, response);
@@ -84,50 +84,26 @@ public class OrderController {
                 List<Order> orders = orderManager.queryByOrid(order.getOrid());
                 //判断此订单的房是否为空房
                 if (OrderProcessUitl.isFreeRoom(order, orders)) {
-                    /*//若为空房则下单
-                    String payUrl = OrderProcessUitl.getPayUrl(user, order);
-                    if (payUrl == null){
-
-                    }
-                    request.getSession().setAttribute("url",payUrl);
-
-                    //查单
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while(true){
-                                if (OrderProcessUitl.queryOrder(order)){
-                                    if (orderManager.add(order)) {
-                                        //下单成功
-                                        //更新用户状态
-                                        user.setUstate("1");
-                                        userManager.update(user);
-                                        ResultResponseUtil.returnJson(response, order);
-                                    } else {//下单失败，单号已存在
-                                        Map<String, Object> data = new HashMap<>();
-                                        data.put("state_code", "0");
-                                        data.put("result", "FAIL");
-                                        data.put("exist_oid", "订单号已存在");
-                                        ResultResponseUtil.returnJson(response, data);
-                                    }
-                                }else {
-                                    try {
-                                        Thread.sleep(2000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-
-                        }
-                    }).start();*/
-//                    return "showQRCode";
                     if (orderManager.add(order)) {
-                        //下单成功
-                        //更新用户状态
-                        user.setUstate("1");
-                        userManager.update(user);
-                        ResultResponseUtil.returnJson(response, order);
+                        String payUrl = OrderProcessUitl.getPayUrl(room, order);
+                        if (payUrl == null){//统一下单失败
+                            orderManager.deleteByOid(order.getOid());
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("state_code", "0");
+                            data.put("result", "FAIL");
+                            data.put("failure", "统一下单失败");
+                            ResultResponseUtil.returnJson(response, data);
+                        }else {
+                            order.setOther2(payUrl);
+                            request.getSession().setAttribute("order", order);
+                            //下单成功
+                            //更新用户状态
+                            user.setUstate("1");
+                            userManager.update(user);
+                           // orderManager.update(order);
+                           // ResultResponseUtil.returnJson(response, order);
+                            return "showQRCode";
+                        }
                     } else {//下单失败，单号已存在
                         Map<String, Object> data = new HashMap<>();
                         data.put("state_code", "0");
@@ -144,6 +120,6 @@ public class OrderController {
                 }
             }
         }
-//        return "";
+        return "";
     }
 }

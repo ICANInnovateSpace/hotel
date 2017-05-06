@@ -10,67 +10,68 @@
     <schema id="4" parent="1" name="mysql"/>
     <schema id="5" parent="1" name="performance_schema"/>
     <schema id="6" parent="1" name="sys"/>
-    <table id="7" parent="2" name="MyOrder"/>
-    <table id="8" parent="2" name="Record"/>
-    <table id="9" parent="2" name="Room"/>
-    <table id="10" parent="2" name="User"/>
-    <column id="11" parent="7" name="oid">
+    <schema id="7" parent="1" name="test"/>
+    <table id="8" parent="2" name="MyOrder"/>
+    <table id="9" parent="2" name="Record"/>
+    <table id="10" parent="2" name="Room"/>
+    <table id="11" parent="2" name="User"/>
+    <column id="12" parent="8" name="oid">
       <Position>1</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="12" parent="7" name="orid">
+    <column id="13" parent="8" name="orid">
       <Position>2</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="13" parent="7" name="ouid">
+    <column id="14" parent="8" name="ouid">
       <Position>3</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="14" parent="7" name="odate">
+    <column id="15" parent="8" name="odate">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="15" parent="7" name="odays">
+    <column id="16" parent="8" name="odays">
       <Position>5</Position>
       <DataType>varchar(3)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="16" parent="7" name="oquit">
+    <column id="17" parent="8" name="oquit">
       <Position>6</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="17" parent="7" name="ototal">
+    <column id="18" parent="8" name="ototal">
       <Position>7</Position>
       <DataType>varchar(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="18" parent="7" name="other1">
+    <column id="19" parent="8" name="other1">
       <Position>8</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="19" parent="7" name="other2">
+    <column id="20" parent="8" name="other2">
       <Position>9</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="20" parent="7" name="other3">
+    <column id="21" parent="8" name="other3">
       <Position>10</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <index id="21" parent="7" name="MyOrder_Room_rid_fk">
+    <index id="22" parent="8" name="MyOrder_Room_rid_fk">
       <ColNames>orid</ColNames>
     </index>
-    <index id="22" parent="7" name="MyOrder_User_uid_fk">
+    <index id="23" parent="8" name="MyOrder_User_uid_fk">
       <ColNames>ouid</ColNames>
     </index>
-    <key id="23" parent="7" name="PRIMARY">
+    <key id="24" parent="8" name="PRIMARY">
       <ColNames>oid</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="24" parent="7" name="MyOrder_Room_rid_fk">
+    <foreign-key id="25" parent="8" name="MyOrder_Room_rid_fk">
       <ColNames>orid</ColNames>
       <RefSchemaName>hotel</RefSchemaName>
       <RefTableName>Room</RefTableName>
@@ -78,7 +79,7 @@
       <OnUpdate>update</OnUpdate>
       <OnDelete>delete</OnDelete>
     </foreign-key>
-    <foreign-key id="25" parent="7" name="MyOrder_User_uid_fk">
+    <foreign-key id="26" parent="8" name="MyOrder_User_uid_fk">
       <ColNames>ouid</ColNames>
       <RefSchemaName>hotel</RefSchemaName>
       <RefTableName>User</RefTableName>
@@ -86,54 +87,54 @@
       <OnUpdate>update</OnUpdate>
       <OnDelete>delete</OnDelete>
     </foreign-key>
-    <column id="26" parent="8" name="rid">
+    <column id="27" parent="9" name="rid">
       <Position>1</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="27" parent="8" name="ruid">
+    <column id="28" parent="9" name="ruid">
       <Position>2</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="28" parent="8" name="rrid">
+    <column id="29" parent="9" name="rrid">
       <Position>3</Position>
       <DataType>varchar(20)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="29" parent="8" name="rdate">
+    <column id="30" parent="9" name="rdate">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="30" parent="8" name="rdays">
+    <column id="31" parent="9" name="rdays">
       <Position>5</Position>
       <DataType>varchar(3)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="31" parent="8" name="other1">
+    <column id="32" parent="9" name="other1">
       <Position>6</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="32" parent="8" name="other2">
+    <column id="33" parent="9" name="other2">
       <Position>7</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="33" parent="8" name="other3">
+    <column id="34" parent="9" name="other3">
       <Position>8</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <index id="34" parent="8" name="Record_Room_rid_fk">
+    <index id="35" parent="9" name="Record_Room_rid_fk">
       <ColNames>rrid</ColNames>
     </index>
-    <index id="35" parent="8" name="Record_User_uid_fk">
+    <index id="36" parent="9" name="Record_User_uid_fk">
       <ColNames>ruid</ColNames>
     </index>
-    <key id="36" parent="8" name="PRIMARY">
+    <key id="37" parent="9" name="PRIMARY">
       <ColNames>rid</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="37" parent="8" name="Record_User_uid_fk">
+    <foreign-key id="38" parent="9" name="Record_User_uid_fk">
       <ColNames>ruid</ColNames>
       <RefSchemaName>hotel</RefSchemaName>
       <RefTableName>User</RefTableName>
@@ -141,7 +142,7 @@
       <OnUpdate>update</OnUpdate>
       <OnDelete>delete</OnDelete>
     </foreign-key>
-    <foreign-key id="38" parent="8" name="Record_Room_rid_fk">
+    <foreign-key id="39" parent="9" name="Record_Room_rid_fk">
       <ColNames>rrid</ColNames>
       <RefSchemaName>hotel</RefSchemaName>
       <RefTableName>Room</RefTableName>
@@ -149,122 +150,122 @@
       <OnUpdate>update</OnUpdate>
       <OnDelete>delete</OnDelete>
     </foreign-key>
-    <column id="39" parent="9" name="rid">
+    <column id="40" parent="10" name="rid">
       <Position>1</Position>
       <DataType>varchar(20)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="40" parent="9" name="rfloor">
+    <column id="41" parent="10" name="rfloor">
       <Position>2</Position>
       <DataType>varchar(2)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="41" parent="9" name="rtype">
+    <column id="42" parent="10" name="rtype">
       <Position>3</Position>
       <DataType>varchar(1)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="42" parent="9" name="rprice">
+    <column id="43" parent="10" name="rprice">
       <Position>4</Position>
       <DataType>varchar(4)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="43" parent="9" name="rnum">
+    <column id="44" parent="10" name="rnum">
       <Position>5</Position>
       <DataType>varchar(1)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="44" parent="9" name="rphoto">
+    <column id="45" parent="10" name="rphoto">
       <Position>6</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="45" parent="9" name="other1">
+    <column id="46" parent="10" name="other1">
       <Position>7</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="46" parent="9" name="other2">
+    <column id="47" parent="10" name="other2">
       <Position>8</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="47" parent="9" name="other3">
+    <column id="48" parent="10" name="other3">
       <Position>9</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="48" parent="9" name="ohter2">
+    <column id="49" parent="10" name="ohter2">
       <Position>10</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="49" parent="9" name="PRIMARY">
+    <key id="50" parent="10" name="PRIMARY">
       <ColNames>rid</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="50" parent="10" name="uid">
+    <column id="51" parent="11" name="uid">
       <Position>1</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="51" parent="10" name="uname">
+    <column id="52" parent="11" name="uname">
       <Position>2</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="52" parent="10" name="ureal">
+    <column id="53" parent="11" name="ureal">
       <Position>3</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="53" parent="10" name="usex">
+    <column id="54" parent="11" name="usex">
       <Position>4</Position>
       <DataType>varchar(10)|0</DataType>
     </column>
-    <column id="54" parent="10" name="uborn">
+    <column id="55" parent="11" name="uborn">
       <Position>5</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="55" parent="10" name="uphone">
+    <column id="56" parent="11" name="uphone">
       <Position>6</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="56" parent="10" name="uphoto">
+    <column id="57" parent="11" name="uphoto">
       <Position>7</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="57" parent="10" name="ucard">
+    <column id="58" parent="11" name="ucard">
       <Position>8</Position>
       <DataType>varchar(18)|0</DataType>
     </column>
-    <column id="58" parent="10" name="ubank">
+    <column id="59" parent="11" name="ubank">
       <Position>9</Position>
       <DataType>varchar(19)|0</DataType>
     </column>
-    <column id="59" parent="10" name="upsw">
+    <column id="60" parent="11" name="upsw">
       <Position>10</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="60" parent="10" name="ustate">
+    <column id="61" parent="11" name="ustate">
       <Position>11</Position>
       <DataType>varchar(1)|0</DataType>
     </column>
-    <column id="61" parent="10" name="other1">
+    <column id="62" parent="11" name="other1">
       <Position>12</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="62" parent="10" name="other2">
+    <column id="63" parent="11" name="other2">
       <Position>13</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="63" parent="10" name="other3">
+    <column id="64" parent="11" name="other3">
       <Position>14</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <index id="64" parent="10" name="uname">
+    <index id="65" parent="11" name="uname">
       <ColNames>uname</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="65" parent="10" name="PRIMARY">
+    <key id="66" parent="11" name="PRIMARY">
       <ColNames>uid</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="66" parent="10" name="uname">
+    <key id="67" parent="11" name="uname">
       <ColNames>uname</ColNames>
       <UnderlyingIndexName>uname</UnderlyingIndexName>
     </key>

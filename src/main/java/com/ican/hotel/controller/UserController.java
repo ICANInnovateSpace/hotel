@@ -9,6 +9,7 @@ import com.ican.hotel.service.IUserManager;
 import com.ican.hotel.utils.ResultResponseUtil;
 import com.ican.hotel.validation.ValidGroup_1;
 import com.ican.hotel.validation.ValidGroup_2;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -67,26 +69,26 @@ public class UserController {
      * 访问url：http：//ipAddress：8080/user/register
      * 响应注册成功或失败的json数据
      *
-     * @param user     用户数据
+     * @param user          用户数据
      * @param bindingResult 绑定表单校验的结果
-     * @param response http响应
+     * @param response      http响应
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public void register(@Validated(value = {ValidGroup_1.class}) User user, BindingResult bindingResult, HttpServletResponse response) {
         //表单校验
         if (bindingResult.hasErrors()) {
-            ResultResponseUtil.fail(bindingResult,response);
+            ResultResponseUtil.fail(bindingResult, response);
         } else {
             if (userManager.add(user)) {
                 //注册成功
                 ResultResponseUtil.success(response);
             } else {
                 //注册失败
-                Map<String,Object> data = new HashMap<>();
-                data.put("state_code","0");
-                data.put("result","FAIL");
-                data.put("exist","用户名已存在");
-                ResultResponseUtil.returnJson(response,data);
+                Map<String, Object> data = new HashMap<>();
+                data.put("state_code", "0");
+                data.put("result", "FAIL");
+                data.put("exist", "用户名已存在");
+                ResultResponseUtil.returnJson(response, data);
             }
         }
     }
@@ -96,16 +98,16 @@ public class UserController {
      * 访问url：http：//ipAddress：8080/user/login
      * 登陆成功响应用户信息/失败响应默认失败信息（json格式）
      *
-     * @param user     用户数据
+     * @param user          用户数据
      * @param bindingResult 绑定表单校验的结果
-     * @param response http响应
+     * @param response      http响应
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public void login(@Validated(value = {ValidGroup_2.class}) User user, BindingResult bindingResult, HttpServletResponse response) {
         //表单校验
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             ResultResponseUtil.fail(bindingResult, response);
-        }else {
+        } else {
             //验证用户名、密码
             User queryUser = userManager.query(user.getUname(), user.getUpsw());
             if (queryUser == null) {
@@ -118,7 +120,7 @@ public class UserController {
             } else {
                 //登陆成功
                 //判断用户状态，是否有订房
-                if ("1".equals(queryUser.getUstate())){
+                if ("1".equals(queryUser.getUstate())) {
                     List<Order> orders = orderManager.queryByOuid(queryUser.getUid());
                     List<Room> rooms = new ArrayList<>();
                     for (Order order :
@@ -131,8 +133,8 @@ public class UserController {
                     result.add(queryUser);
                     result.add(orders);
                     result.add(rooms);
-                    ResultResponseUtil.returnJson(response,result);
-                }else {
+                    ResultResponseUtil.returnJson(response, result);
+                } else {
                     ResultResponseUtil.returnJson(response, queryUser);
                 }
             }
@@ -178,44 +180,44 @@ public class UserController {
      * 访问url： http://ipAddress:8080/user/changePassword
      * 成功返回用户信息/失败返回提示信息（json格式）
      *
-     * @param user 用户信息
+     * @param user          用户信息
      * @param bindingResult 绑定表单校验的结果
-     * @param newPassword 新密码
-     * @param response http响应
-     * */
-    @RequestMapping(value = "/changePassword",method = RequestMethod.POST)
-    public void chanagePassword(@Validated User user,BindingResult bindingResult, String newPassword, HttpServletResponse response){
+     * @param newPassword   新密码
+     * @param response      http响应
+     */
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    public void chanagePassword(@Validated User user, BindingResult bindingResult, String newPassword, HttpServletResponse response) {
         //先校验旧密码、新密码是否为空
         //接着判断查出来的用户是否为空
         //然后判断旧密码是否匹配
         //改密码
-        if (newPassword ==null || newPassword.equals("")){
-            Map<String,Object> data = new HashMap<>();
-            data.put("state_code","0");
-            data.put("result","FAIL");
-            data.put("empty","新密码不能为空");
-            ResultResponseUtil.returnJson(response,data);
-        }else if (bindingResult.hasErrors()){
+        if (newPassword == null || newPassword.equals("")) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("state_code", "0");
+            data.put("result", "FAIL");
+            data.put("empty", "新密码不能为空");
+            ResultResponseUtil.returnJson(response, data);
+        } else if (bindingResult.hasErrors()) {
             ResultResponseUtil.fail(bindingResult, response);
-        }else {
+        } else {
             User queryUser = userManager.queryByUname(user.getUname());
-            if (queryUser == null){
-                Map<String,Object> data = new HashMap<>();
-                data.put("state_code","0");
-                data.put("result","FAIL");
-                data.put("not_exist","用户不存在");
-                ResultResponseUtil.returnJson(response,data);
-            }else {
-                if (queryUser.getUpsw().equals(user.getUpsw())){
+            if (queryUser == null) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("state_code", "0");
+                data.put("result", "FAIL");
+                data.put("not_exist", "用户不存在");
+                ResultResponseUtil.returnJson(response, data);
+            } else {
+                if (queryUser.getUpsw().equals(user.getUpsw())) {
                     queryUser.setUpsw(newPassword);
                     userManager.update(queryUser);
-                    ResultResponseUtil.returnJson(response,queryUser);
-                }else {
-                    Map<String,Object> data = new HashMap<>();
-                    data.put("state_code","0");
-                    data.put("result","FAIL");
-                    data.put("not_match","旧密码不匹配");
-                    ResultResponseUtil.returnJson(response,data);
+                    ResultResponseUtil.returnJson(response, queryUser);
+                } else {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("state_code", "0");
+                    data.put("result", "FAIL");
+                    data.put("not_match", "旧密码不匹配");
+                    ResultResponseUtil.returnJson(response, data);
                 }
             }
         }
@@ -259,8 +261,8 @@ public class UserController {
                     //将文件存储到该路径
                     file.transferTo(photoFile);
                     //把照片访问的url信息存到用户数据
-                    String url = request.getScheme() +"://" + request.getServerName()
-                            + ":" +request.getServerPort()
+                    String url = request.getScheme() + "://" + request.getServerName()
+                            + ":" + request.getServerPort()
                             + request.getContextPath() + "/upload/" + user.getUname()
                             + "/" + file.getOriginalFilename();
                     user.setUphoto(url);
