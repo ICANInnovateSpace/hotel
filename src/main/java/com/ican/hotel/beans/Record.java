@@ -6,32 +6,21 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by mrzhou on 17-2-12.
- * 入住记录Record Entity
+ * Created by mrzhou on 17-5-6.
+ *
  */
 @Entity
-@Table(name = "Record")
 public class Record {
+    private String rid;
+    private String ruid;
+    private String rrid;
+    private Date rdate;
+    private String rdays;
+
     @Id
+    @Column(name = "rid")
     @GenericGenerator(name = "systemUUID", strategy = "uuid")
     @GeneratedValue(generator = "systemUUID")
-    @Column(length = 32)
-    private String rid;
-    @Column(length = 32)
-    private String ruid;
-    @Column(length = 20)
-    private String rrid;
-    @Column
-    private Date rdate;
-    @Column(length = 3)
-    private String rdays;
-    @Column
-    private String other1;
-    @Column
-    private String other2;
-    @Column
-    private String other3;
-
     public String getRid() {
         return rid;
     }
@@ -40,22 +29,20 @@ public class Record {
         this.rid = rid;
     }
 
-    public String getRuid() {
-        return ruid;
-    }
+    @Basic
+    @Column(name = "ruid")
+    public String getRuid() { return ruid; }
 
-    public void setRuid(String ruid) {
-        this.ruid = ruid;
-    }
+    public void setRuid(String ouid) { this.ruid = ouid; }
 
-    public String getRrid() {
-        return rrid;
-    }
+    @Basic
+    @Column(name = "rrid")
+    public String getRrid() { return rrid; }
 
-    public void setRrid(String rrid) {
-        this.rrid = rrid;
-    }
+    public void setRrid(String rrid) { this.rrid = rrid; }
 
+    @Basic
+    @Column(name = "rdate")
     public Date getRdate() {
         return rdate;
     }
@@ -64,6 +51,8 @@ public class Record {
         this.rdate = rdate;
     }
 
+    @Basic
+    @Column(name = "rdays")
     public String getRdays() {
         return rdays;
     }
@@ -72,27 +61,27 @@ public class Record {
         this.rdays = rdays;
     }
 
-    public String getOther1() {
-        return other1;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Record record = (Record) o;
+
+        if (rid != null ? !rid.equals(record.rid) : record.rid != null) return false;
+        if (rdate != null ? !rdate.equals(record.rdate) : record.rdate != null) return false;
+        if (rdays != null ? !rdays.equals(record.rdays) : record.rdays != null) return false;
+
+        return true;
     }
 
-    public void setOther1(String other1) {
-        this.other1 = other1;
+    @Override
+    public int hashCode() {
+        int result = rid != null ? rid.hashCode() : 0;
+        result = 31 * result + (rdate != null ? rdate.hashCode() : 0);
+        result = 31 * result + (rdays != null ? rdays.hashCode() : 0);
+        return result;
     }
 
-    public String getOther2() {
-        return other2;
-    }
 
-    public void setOther2(String other2) {
-        this.other2 = other2;
-    }
-
-    public String getOther3() {
-        return other3;
-    }
-
-    public void setOther3(String other3) {
-        this.other3 = other3;
-    }
 }

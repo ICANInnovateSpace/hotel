@@ -33,7 +33,7 @@
         <table align="center">
             <tr>
                 <td>客房号：</td>
-                <td><input type="text" name="orid"/></td>
+                <td><input type="text" name="room.rid"/></td>
             </tr>
             <tr>
                 <td>用户id：</td>
@@ -49,6 +49,22 @@
             <tr>
                 <td>入住天数：</td>
                 <td><input type="text" name="odays"/></td>
+            </tr>
+            <tr>
+                <td>微信单号：</td>
+                <td><input type="text" name="wxNO"/></td>
+            </tr>
+            <tr>
+                <td>扫码支付URL：</td>
+                <td><input type="text" name="wxPayUrl"/></td>
+            </tr>
+            <tr>
+                <td>离店日期：</td>
+                <td><input type="text" name="oquit"/></td>
+            </tr>
+            <tr>
+                <td>总金额：</td>
+                <td><input type="text" name="ototal"/></td>
             </tr>
             <tr>
                 <td><input type="button" value="下单" onclick="fun();"/></td>

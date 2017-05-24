@@ -1,7 +1,5 @@
 package com.ican.hotel.controller;
 
-import com.ican.hotel.beans.Order;
-import com.ican.hotel.beans.Room;
 import com.ican.hotel.beans.User;
 import com.ican.hotel.service.IOrderManager;
 import com.ican.hotel.service.IRoomManager;
@@ -9,7 +7,6 @@ import com.ican.hotel.service.IUserManager;
 import com.ican.hotel.utils.ResultResponseUtil;
 import com.ican.hotel.validation.ValidGroup_1;
 import com.ican.hotel.validation.ValidGroup_2;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +19,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -63,6 +59,9 @@ public class UserController {
     public String toUpdate() {
         return "update";
     }
+
+    @RequestMapping("/toChangePassword")
+    public String toChangePassword(){ return "changePassword"; }
 
     /**
      * 用户注册
@@ -121,7 +120,7 @@ public class UserController {
                 //登陆成功
                 //判断用户状态，是否有订房
                 if ("1".equals(queryUser.getUstate())) {
-                    List<Order> orders = orderManager.queryByOuid(queryUser.getUid());
+                    /*List<Order> orders = orderManager.queryByOuid(queryUser.getUid());
                     List<Room> rooms = new ArrayList<>();
                     for (Order order :
                             orders) {
@@ -132,8 +131,8 @@ public class UserController {
                     List<Object> result = new ArrayList<>();
                     result.add(queryUser);
                     result.add(orders);
-                    result.add(rooms);
-                    ResultResponseUtil.returnJson(response, result);
+                    result.add(rooms);*/
+                    ResultResponseUtil.returnJson(response, queryUser);
                 } else {
                     ResultResponseUtil.returnJson(response, queryUser);
                 }
@@ -180,27 +179,25 @@ public class UserController {
      * 访问url： http://ipAddress:8080/user/changePassword
      * 成功返回用户信息/失败返回提示信息（json格式）
      *
-     * @param user          用户信息
-     * @param bindingResult 绑定表单校验的结果
+     * @param uid          用户id
+     * @param oldPassword  旧密码
      * @param newPassword   新密码
      * @param response      http响应
      */
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-    public void chanagePassword(@Validated User user, BindingResult bindingResult, String newPassword, HttpServletResponse response) {
+    public void chanagePassword(String uid,String oldPassword, String newPassword, HttpServletResponse response) {
         //先校验旧密码、新密码是否为空
         //接着判断查出来的用户是否为空
         //然后判断旧密码是否匹配
         //改密码
-        if (newPassword == null || newPassword.equals("")) {
+        if (newPassword.length() < 6 || newPassword.length() > 20) {
             Map<String, Object> data = new HashMap<>();
             data.put("state_code", "0");
             data.put("result", "FAIL");
-            data.put("empty", "新密码不能为空");
+            data.put("length", "密码长度必须在6~20位之间");
             ResultResponseUtil.returnJson(response, data);
-        } else if (bindingResult.hasErrors()) {
-            ResultResponseUtil.fail(bindingResult, response);
         } else {
-            User queryUser = userManager.queryByUname(user.getUname());
+            User queryUser = userManager.queryByUid(uid);
             if (queryUser == null) {
                 Map<String, Object> data = new HashMap<>();
                 data.put("state_code", "0");
@@ -208,7 +205,7 @@ public class UserController {
                 data.put("not_exist", "用户不存在");
                 ResultResponseUtil.returnJson(response, data);
             } else {
-                if (queryUser.getUpsw().equals(user.getUpsw())) {
+                if (queryUser.getUpsw().equals(oldPassword)) {
                     queryUser.setUpsw(newPassword);
                     userManager.update(queryUser);
                     ResultResponseUtil.returnJson(response, queryUser);

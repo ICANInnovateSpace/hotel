@@ -1,61 +1,41 @@
 package com.ican.hotel.beans;
 
-import com.ican.hotel.validation.ValidGroup_2;
 import com.ican.hotel.validation.ValidGroup_1;
+import com.ican.hotel.validation.ValidGroup_2;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.sql.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Created by mrzhou on 17-2-9.
- * 用户User Entity
+ * Created by mrzhou on 17-5-6.
  */
 @Entity
-@Table(name = "User")
 public class User {
+    private String uid;
+    private String uname;
+    private String ureal;
+    private String usex;
+    private Date uborn;
+    private String uphone;
+    private String uphoto;
+    private String ucard;
+    private String ubank;
+    private String upsw;
+    private String ustate;
+    private List<Order> orders;
+    private List<Record> records;
+
     @Id
+    @Column(name = "uid")
     @GenericGenerator(name = "systemUUID", strategy = "uuid")
     @GeneratedValue(generator = "systemUUID")
-    @Column(length = 32)
-    private String uid;
-    @NotEmpty(message = "用户名不能为空",groups = {ValidGroup_1.class,ValidGroup_2.class})
-    @Column(length = 20,unique = true)
-    private String uname;
-    @Column(length = 20)
-    private String ureal;
-    @Column(length = 10)
-    private String usex;
-    @Column
-    @Past
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date uborn;
-    @Pattern(regexp = "^((13[0-9])|(15[^4,\\D])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$",message = "请输入正确的手机号",groups = {ValidGroup_1.class})
-    @Column(length = 20)
-    private String uphone;
-    @Column
-    private String uphoto;
-    @Column(length = 18)
-    private String ucard;
-    @Column(length = 19)
-    private String ubank;
-    @Length(min=6, max=20,message = "密码长度必须在{min}到{max}之间",groups = {ValidGroup_1.class,ValidGroup_2.class})
-    @Column(length = 20)
-    private String upsw;
-    @Column(length = 1)
-    private String ustate;
-    @Column
-    private String other1;
-    @Column
-    private String other2;
-    @Column
-    private String other3;
-
     public String getUid() {
         return uid;
     }
@@ -64,6 +44,9 @@ public class User {
         this.uid = uid;
     }
 
+    @Basic
+    @Column(name = "uname",unique = true)
+    @NotEmpty(message = "用户名不能为空",groups = {ValidGroup_1.class,ValidGroup_2.class})
     public String getUname() {
         return uname;
     }
@@ -72,6 +55,8 @@ public class User {
         this.uname = uname;
     }
 
+    @Basic
+    @Column(name = "ureal")
     public String getUreal() {
         return ureal;
     }
@@ -80,6 +65,8 @@ public class User {
         this.ureal = ureal;
     }
 
+    @Basic
+    @Column(name = "usex")
     public String getUsex() {
         return usex;
     }
@@ -88,6 +75,9 @@ public class User {
         this.usex = usex;
     }
 
+    @Basic
+    @Column(name = "uborn")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date getUborn() {
         return uborn;
     }
@@ -96,6 +86,9 @@ public class User {
         this.uborn = uborn;
     }
 
+    @Basic
+    @Column(name = "uphone")
+    @Pattern(regexp = "^((13[0-9])|(15[^4,\\D])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$",message = "请输入正确的手机号",groups = {ValidGroup_1.class})
     public String getUphone() {
         return uphone;
     }
@@ -104,6 +97,8 @@ public class User {
         this.uphone = uphone;
     }
 
+    @Basic
+    @Column(name = "uphoto")
     public String getUphoto() {
         return uphoto;
     }
@@ -112,6 +107,8 @@ public class User {
         this.uphoto = uphoto;
     }
 
+    @Basic
+    @Column(name = "ucard")
     public String getUcard() {
         return ucard;
     }
@@ -120,6 +117,8 @@ public class User {
         this.ucard = ucard;
     }
 
+    @Basic
+    @Column(name = "ubank")
     public String getUbank() {
         return ubank;
     }
@@ -128,6 +127,9 @@ public class User {
         this.ubank = ubank;
     }
 
+    @Basic
+    @Column(name = "upsw")
+    @Length(min=6, max=20,message = "密码长度必须在{min}到{max}之间",groups = {ValidGroup_1.class,ValidGroup_2.class})
     public String getUpsw() {
         return upsw;
     }
@@ -136,6 +138,8 @@ public class User {
         this.upsw = upsw;
     }
 
+    @Basic
+    @Column(name = "ustate")
     public String getUstate() {
         return ustate;
     }
@@ -144,28 +148,62 @@ public class User {
         this.ustate = ustate;
     }
 
-    public String getOther1() {
-        return other1;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (uid != null ? !uid.equals(user.uid) : user.uid != null) return false;
+        if (uname != null ? !uname.equals(user.uname) : user.uname != null) return false;
+        if (ureal != null ? !ureal.equals(user.ureal) : user.ureal != null) return false;
+        if (usex != null ? !usex.equals(user.usex) : user.usex != null) return false;
+        if (uborn != null ? !uborn.equals(user.uborn) : user.uborn != null) return false;
+        if (uphone != null ? !uphone.equals(user.uphone) : user.uphone != null) return false;
+        if (uphoto != null ? !uphoto.equals(user.uphoto) : user.uphoto != null) return false;
+        if (ucard != null ? !ucard.equals(user.ucard) : user.ucard != null) return false;
+        if (ubank != null ? !ubank.equals(user.ubank) : user.ubank != null) return false;
+        if (upsw != null ? !upsw.equals(user.upsw) : user.upsw != null) return false;
+        if (ustate != null ? !ustate.equals(user.ustate) : user.ustate != null) return false;
+
+        return true;
     }
 
-    public void setOther1(String other1) {
-        this.other1 = other1;
+    @Override
+    public int hashCode() {
+        int result = uid != null ? uid.hashCode() : 0;
+        result = 31 * result + (uname != null ? uname.hashCode() : 0);
+        result = 31 * result + (ureal != null ? ureal.hashCode() : 0);
+        result = 31 * result + (usex != null ? usex.hashCode() : 0);
+        result = 31 * result + (uborn != null ? uborn.hashCode() : 0);
+        result = 31 * result + (uphone != null ? uphone.hashCode() : 0);
+        result = 31 * result + (uphoto != null ? uphoto.hashCode() : 0);
+        result = 31 * result + (ucard != null ? ucard.hashCode() : 0);
+        result = 31 * result + (ubank != null ? ubank.hashCode() : 0);
+        result = 31 * result + (upsw != null ? upsw.hashCode() : 0);
+        result = 31 * result + (ustate != null ? ustate.hashCode() : 0);
+        return result;
     }
 
-    public String getOther2() {
-        return other2;
+
+    @OneToMany
+    @JoinColumn(name = "ouid")
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setOther2(String other2) {
-        this.other2 = other2;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
-    public String getOther3() {
-        return other3;
+    @OneToMany
+    @JoinColumn(name = "ruid")
+    public List<Record> getRecords() {
+        return records;
     }
 
-    public void setOther3(String other3) {
-        this.other3 = other3;
+    public void setRecords(List<Record> records) {
+        this.records = records;
     }
-
 }

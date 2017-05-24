@@ -4,8 +4,11 @@
 <!-- （通常是 hibernate.cfg.xml）中声明持久性类： -->
 <hibernate-configuration>
     <session-factory>
+        <property name="connection.url">jdbc:mysql://localhost:3306/hotel</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <mapping class="com.ican.hotel.beans.User"/>
         <mapping class="com.ican.hotel.beans.Room"/>
         <mapping class="com.ican.hotel.beans.Order"/>
+        <mapping class="com.ican.hotel.beans.Record"/>
     </session-factory>
 </hibernate-configuration>

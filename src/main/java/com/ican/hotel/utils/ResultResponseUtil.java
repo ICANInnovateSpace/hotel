@@ -1,6 +1,8 @@
 package com.ican.hotel.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ican.hotel.beans.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -29,7 +31,7 @@ public class ResultResponseUtil {
             //获取输出流
             writer = response.getWriter();
             //获取Gson对象，将javaBean转换成json
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
             String json = gson.toJson(javaBeanOrMap);
             //返回json数据
             writer.print(json);

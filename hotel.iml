@@ -25,7 +25,7 @@
       <configuration>
         <datasource-map>
           <unit-entry name="com:ican:hotel:config:hibernate:hibernate.cfg.xml" />
-          <unit-entry name="config:hibernate:hibernate.cfg.xml" />
+          <unit-entry name="config:hibernate:hibernate.cfg.xml" value="1ebc6d99-6d42-4ef0-919b-3b80b1bcbaeb" />
           <unit-entry name="sessionFactory" value="datasource" />
         </datasource-map>
         <naming-strategy-map />

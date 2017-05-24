@@ -59,7 +59,12 @@ public class UserDao implements IUserDao {
      * */
     @Override
     public User queryByUid(String uid) {
-        return (User) sessionFactory.getCurrentSession().get(User.class,uid);
+        Query query = sessionFactory.getCurrentSession().createQuery("from User where uid=?0");
+        query.setParameter("0",uid);
+        List list = query.list();
+        if (list.size() != 0)
+            return (User) list.get(0);
+        return null;
     }
 
     /**

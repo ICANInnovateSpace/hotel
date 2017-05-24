@@ -2,7 +2,6 @@ package com.ican.hotel.utils;
 
 import com.ican.hotel.beans.Order;
 import com.ican.hotel.beans.Room;
-import com.ican.hotel.beans.User;
 import com.ican.wxpay.lib.WechatPayData;
 import com.ican.wxpay.lib.WechatPayException;
 import com.ican.wxpay.nativePay.NativePay;
@@ -85,7 +84,7 @@ public class OrderProcessUitl {
       if (!((odate.getTime() < orderDate.getTime() && oquit.getTime() < orderDate.getTime())
               || (odate.getTime() > orderDate.getTime() && odate.getTime() > parseQuitDate.getTime()))) {
         //取出有冲突的订单的客房号
-        String orid = order.getOrid();
+        String orid = order.getRoom().getRid();
         //将对应的客房号的客房从rooms中移除
         //循环迭代找到匹配的客房号的客房
         rooms.removeIf(room -> orid.equals(room.getRid()));
@@ -125,8 +124,8 @@ public class OrderProcessUitl {
    * @param room 订单指定的客房对象
    * @param order 订单对象
    * */
-  public static void setQuitDateAndTotal(Room room,Order order) throws ParseException {
-    //取得当前订单的入住时间和退房时间
+  public static void setQuitDateAndTotal(Room room, Order order) throws ParseException {
+    //取得当前订单的入住时间并计算退房时间
     Date orderOdate = order.getOdate();
     String odays = order.getOdays();
     String orderQuitDate = OrderProcessUitl.getOrderQuitDate(orderOdate, odays);
@@ -162,15 +161,15 @@ public class OrderProcessUitl {
     wechatPayData.addSubData("product_id","123");
     wechatPayData.addSubData("out_trade_no", outTradeNo);
     wechatPayData.addSubData("body","预定客房");
-    wechatPayData.addSubData("total_fee",room.getRprice());
+    wechatPayData.addSubData("total_fee",/*room.getRprice()*/"1");
     wechatPayData.addSubData("trade_type","NATIVE");
-    Date curDate = new Date();
+    /*Date curDate = new Date();
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     long cutTime = curDate.getTime();
     long timeExpire = cutTime + M * 5;
     wechatPayData.addSubData("time_start",dateFormat.format(curDate));
-    wechatPayData.addSubData("time_expire",dateFormat.format(new Date(timeExpire)));
-    order.setOther1(outTradeNo);
+    wechatPayData.addSubData("time_expire",dateFormat.format(new Date(timeExpire)));*/
+    order.setWxNO(outTradeNo);
     try {
       wechatPayData = nativePay.unifiedOrder(wechatPayData);
     } catch (WechatPayException e) {
@@ -188,7 +187,7 @@ public class OrderProcessUitl {
   public static boolean queryOrder(Order order) {
     NativePay nativePay = new NativePay();
     WechatPayData wechatPayData = new WechatPayData();
-    wechatPayData.addSubData("out_trade_no", order.getOther1());
+    wechatPayData.addSubData("out_trade_no", order.getWxNO());
     try {
       wechatPayData = nativePay.queryOrder(wechatPayData);
     } catch (WechatPayException e) {

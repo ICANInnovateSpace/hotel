@@ -1,36 +1,23 @@
 package com.ican.hotel.beans;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Created by mrzhou on 17-2-12.
- * 客房Room Entity
+ * Created by mrzhou on 17-5-6.
  */
 @Entity
-@Table(name = "Room")
 public class Room {
-    @Id
-    @Column(length = 20)
     private String rid;
-    @Column(length = 2)
     private String rfloor;
-    @Column(length = 1)
     private String rtype;
-    @Column(length = 4)
     private String rprice;
-    @Column(length = 1)
     private String rnum;
-    @Column
     private String rphoto;
-    @Column
-    private String other1;
-    @Column
-    private String ohter2;
-    @Column
-    private String other3;
 
+    @Id
+    @Column(name = "rid")
     public String getRid() {
         return rid;
     }
@@ -39,6 +26,8 @@ public class Room {
         this.rid = rid;
     }
 
+    @Basic
+    @Column(name = "rfloor")
     public String getRfloor() {
         return rfloor;
     }
@@ -47,6 +36,8 @@ public class Room {
         this.rfloor = rfloor;
     }
 
+    @Basic
+    @Column(name = "rtype")
     public String getRtype() {
         return rtype;
     }
@@ -55,6 +46,8 @@ public class Room {
         this.rtype = rtype;
     }
 
+    @Basic
+    @Column(name = "rprice")
     public String getRprice() {
         return rprice;
     }
@@ -63,6 +56,8 @@ public class Room {
         this.rprice = rprice;
     }
 
+    @Basic
+    @Column(name = "rnum")
     public String getRnum() {
         return rnum;
     }
@@ -71,6 +66,8 @@ public class Room {
         this.rnum = rnum;
     }
 
+    @Basic
+    @Column(name = "rphoto")
     public String getRphoto() {
         return rphoto;
     }
@@ -79,27 +76,31 @@ public class Room {
         this.rphoto = rphoto;
     }
 
-    public String getOther1() {
-        return other1;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Room room = (Room) o;
+
+        if (rid != null ? !rid.equals(room.rid) : room.rid != null) return false;
+        if (rfloor != null ? !rfloor.equals(room.rfloor) : room.rfloor != null) return false;
+        if (rtype != null ? !rtype.equals(room.rtype) : room.rtype != null) return false;
+        if (rprice != null ? !rprice.equals(room.rprice) : room.rprice != null) return false;
+        if (rnum != null ? !rnum.equals(room.rnum) : room.rnum != null) return false;
+        if (rphoto != null ? !rphoto.equals(room.rphoto) : room.rphoto != null) return false;
+
+        return true;
     }
 
-    public void setOther1(String other1) {
-        this.other1 = other1;
-    }
-
-    public String getOhter2() {
-        return ohter2;
-    }
-
-    public void setOhter2(String ohter2) {
-        this.ohter2 = ohter2;
-    }
-
-    public String getOther3() {
-        return other3;
-    }
-
-    public void setOther3(String other3) {
-        this.other3 = other3;
+    @Override
+    public int hashCode() {
+        int result = rid != null ? rid.hashCode() : 0;
+        result = 31 * result + (rfloor != null ? rfloor.hashCode() : 0);
+        result = 31 * result + (rtype != null ? rtype.hashCode() : 0);
+        result = 31 * result + (rprice != null ? rprice.hashCode() : 0);
+        result = 31 * result + (rnum != null ? rnum.hashCode() : 0);
+        result = 31 * result + (rphoto != null ? rphoto.hashCode() : 0);
+        return result;
     }
 }
